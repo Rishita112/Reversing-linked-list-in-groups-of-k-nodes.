@@ -1,0 +1,113 @@
+#include<bits/stdc++.h>
+#define ll long long int 
+
+using namespace std;
+
+  struct ListNode {
+      int val;
+      ListNode *next;
+      ListNode() : val(0), next(nullptr) {}
+      ListNode(int x) : val(x), next(nullptr) {}
+      ListNode(int x, ListNode *next) : val(x), next(next) {}
+  };
+        
+int count(ListNode*h){
+        int c=0;
+        
+        while(h!=NULL){
+            c++;
+            h=h->next;
+        }
+        
+        return c;
+        
+    }
+   vector<ListNode*>reverse(ListNode*h,int k){
+        
+        ListNode*curr=h,*prev=NULL,*newnxt=NULL;
+        
+       
+        vector<ListNode*>v(2);
+        
+        while(curr!=NULL && k>0){
+            newnxt=curr->next;
+            curr->next=prev;
+            prev=curr;
+            curr=newnxt;
+            k--;
+        }
+        
+       h=prev;
+        
+        v[0]=h;
+        v[1]=curr;
+        
+        return v;
+        
+    } 
+
+    ListNode* reverseKGroup(ListNode* head, int k) {
+    
+        if(head==NULL||head->next==NULL)
+            return head;
+        
+        int c=count(head),i,t;
+        t=c/k;
+        
+        if(c<k)
+         return head;
+        
+        vector<ListNode*>v;
+        
+        ListNode*prev=head,*nxt,*h,*temp,*h1;
+        
+        v=reverse(head,k);
+        
+        h1=v[0];
+        nxt=v[1];
+            
+ 
+        t--;
+        
+        while(t>0){
+            temp=nxt;
+            v=reverse(nxt,k);
+            h=v[0];
+            nxt=v[1];
+            prev->next=h;
+            prev=temp;
+            t--;
+        }
+     prev->next=nxt;
+        
+      return h1; 
+        
+    }
+    
+    int main() {
+    
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    int n,i,x,k,c;
+    cin>>n>>k;
+    ListNode*head,*temp;
+    cin>>x;
+    head=new ListNode(x);
+    temp=head;
+    for(i=1;i<n;i++){
+        cin>>x;
+        ListNode*curr=new ListNode(x);
+        temp->next=curr;
+        temp=curr;
+        
+    }
+   ListNode*newh= reverseKGroup(head,k);
+   
+   while(newh!=NULL){
+       cout<<newh->val<<" ";
+       newh=newh->next;
+   }
+   return 0;
+  }
